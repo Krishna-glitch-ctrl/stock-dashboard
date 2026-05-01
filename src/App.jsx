@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import StockDetail from './pages/StockDetail'
 import Watchlist from './pages/Watchlist'
 import News from './pages/News'
+import NotFound from './pages/NotFound'
 
 // Separate component so it can call useWatchlist() (which needs the provider above it)
 function Navbar() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/stock/:symbol" element={<StockDetail />} />
           <Route path="/watchlist" element={<Watchlist />} />
           <Route path="/news" element={<News />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </WatchlistProvider>
