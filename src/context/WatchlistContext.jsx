@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 // The context object — holds everything the watchlist feature needs
 export const WatchlistContext = createContext(null)
@@ -8,9 +8,10 @@ export function WatchlistProvider({ children }) {
   // Each item in the array looks like: { symbol: "AAPL", note: "" }
   const [watchlist, setWatchlist] = useState([])
 
-  // This ref flips to true once we've finished reading from localStorage.
-  // It prevents us from overwriting saved data before we've loaded it.
-  const hasLoaded = useRef(false)
+  // Flips to true after the load effect reads from localStorage and propagates
+  // state. Because this is useState (not useRef), setting it triggers a re-render,
+  // which causes the save effect to run again — this time with hasLoaded === true.
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   // On first render: load the saved watchlist from localStorage
   useEffect(() => {
@@ -20,19 +21,20 @@ export function WatchlistProvider({ children }) {
     } catch (err) {
       console.error('Failed to load watchlist from localStorage:', err)
     }
-    hasLoaded.current = true
+    setHasLoaded(true)
   }, [])
 
   // Whenever the watchlist changes: save it to localStorage.
-  // We skip this on the very first render (before hydration) using the ref above.
+  // We skip this until hasLoaded is true so we don't overwrite saved data
+  // with an empty array on the first render before hydration completes.
   useEffect(() => {
-    if (!hasLoaded.current) return
+    if (!hasLoaded) return
     try {
       localStorage.setItem('watchlist', JSON.stringify(watchlist))
     } catch (err) {
       console.error('Failed to save watchlist to localStorage:', err)
     }
-  }, [watchlist])
+  }, [watchlist, hasLoaded])
 
   // Add a symbol if it isn't already in the list
   function addToWatchlist(symbol) {

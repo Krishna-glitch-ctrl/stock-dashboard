@@ -28,6 +28,17 @@ export async function getQuote(symbol) {
   }
 }
 
+// Fetches the latest general market news articles as an array.
+export async function getMarketNews() {
+  try {
+    const res = await fetch(`${BASE}/news?category=general&token=${API_KEY}`)
+    return await res.json()
+  } catch (err) {
+    console.error('getMarketNews error:', err)
+    return []
+  }
+}
+
 // Fetches company profile info for a stock symbol (e.g. name, logo, industry).
 export async function getCompanyProfile(symbol) {
   try {
