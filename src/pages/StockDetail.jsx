@@ -5,9 +5,11 @@ import {
   ResponsiveContainer, CartesianGrid,
 } from 'recharts'
 import { getQuote, getCompanyProfile } from '../services/finnhub'
+import { useWatchlist } from '../context/WatchlistContext'
 
 export default function StockDetail() {
   const { symbol } = useParams()
+  const { isInWatchlist, addToWatchlist, removeFromWatchlist } = useWatchlist()
 
   const [quote, setQuote] = useState(null)
   const [profile, setProfile] = useState(null)
@@ -120,11 +122,27 @@ export default function StockDetail() {
         </div>
 
         {/* Price section */}
-        <div className="flex items-end gap-4 mt-6 mb-8">
+        <div className="flex flex-wrap items-end gap-4 mt-6 mb-8">
           <span className="text-5xl font-bold">${fmt(quote.c)}</span>
           <span className={`text-xl mb-1 ${changeColor}`}>
             {changeSign}{fmt(quote.d)} ({changeSign}{fmt(quote.dp)}%)
           </span>
+          {/* Watchlist toggle button */}
+          {isInWatchlist(symbol) ? (
+            <button
+              onClick={() => removeFromWatchlist(symbol)}
+              className="mb-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              ✓ Remove from Watchlist
+            </button>
+          ) : (
+            <button
+              onClick={() => addToWatchlist(symbol)}
+              className="mb-1 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            >
+              + Add to Watchlist
+            </button>
+          )}
         </div>
 
         {/* Stats grid */}
