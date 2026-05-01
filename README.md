@@ -3,7 +3,7 @@
 A React-based stock market dashboard built as a frontend capstone project. Users can search for stocks, view detailed price information with charts, manage a personal watchlist, and read market news.
 
 ## Live Demo
-https://vercel.com/krishna-glitch-ctrls-projects/stock-dashboard/Eib3mUhP4AF5j69hCmgAzUfdq5mJ
+https://stock-dashboard-theta-six.vercel.app/
 
 ## Features
 - Search any US stock by symbol or company name (debounced)
