@@ -1,18 +1,8 @@
-// What is an Error Boundary?
-// An Error Boundary is a React component that catches JavaScript errors thrown
-// anywhere inside its child component tree. Without it, a single crash in any
-// component would leave the whole screen blank and give the user no way to recover.
-// Instead, an Error Boundary catches the error and shows a friendly fallback UI.
-//
-// Why must it be a class component?
-// React's error-catching hooks (getDerivedStateFromError and componentDidCatch)
-// only exist on class components. There is no functional-component equivalent yet,
-// so this is one of the few remaining cases where a class is required in React.
-//
-// What does it protect against?
-// Any runtime error that occurs during rendering, inside a lifecycle method, or
-// inside a constructor of a child component. It does NOT catch errors in event
-// handlers, async code, or server-side rendering — those need their own try/catch.
+// catches any crash inside its children and shows a fallback screen instead of
+// a blank page. has to be a class component because getDerivedStateFromError and
+// componentDidCatch don't exist as hooks yet — this is one of those rare cases
+// where you still need a class in React. doesn't catch errors in event handlers
+// or async code though, those need their own try/catch.
 
 import { Component } from 'react'
 

@@ -11,7 +11,6 @@ export default function Home() {
   const [trendingStocks, setTrendingStocks] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // Fetch quotes for all trending symbols once when the page first loads
   useEffect(() => {
     async function loadTrending() {
       const results = await Promise.all(
@@ -28,7 +27,6 @@ export default function Home() {
 
   const debouncedQuery = useDebounce(searchQuery, 500)
 
-  // Run a search whenever the debounced query changes
   useEffect(() => {
     if (!debouncedQuery.trim()) {
       setSearchResults([])
@@ -46,7 +44,6 @@ export default function Home() {
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl font-bold mb-8">Stock Dashboard</h1>
 
-        {/* Search input */}
         <input
           type="text"
           placeholder="Search stocks (e.g. Apple or AAPL)..."
@@ -55,7 +52,6 @@ export default function Home() {
           className="w-full max-w-2xl bg-gray-800 border border-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-8"
         />
 
-        {/* Search results */}
         {searchResults.length > 0 && (
           <div className="flex flex-col gap-2 max-w-2xl">
             {searchResults.map((stock) => (

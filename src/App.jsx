@@ -28,7 +28,6 @@ function Navbar() {
 
 function App() {
   return (
-    // WatchlistProvider wraps everything so Navbar and all pages can access watchlist state
     <WatchlistProvider>
       <BrowserRouter>
         <Navbar />

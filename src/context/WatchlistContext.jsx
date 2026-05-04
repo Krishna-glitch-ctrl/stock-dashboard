@@ -8,12 +8,10 @@ export function WatchlistProvider({ children }) {
   // Each item in the array looks like: { symbol: "AAPL", note: "" }
   const [watchlist, setWatchlist] = useState([])
 
-  // Flips to true after the load effect reads from localStorage and propagates
-  // state. Because this is useState (not useRef), setting it triggers a re-render,
-  // which causes the save effect to run again — this time with hasLoaded === true.
+  // has to be state (not a ref) so updating it triggers a re-render, which makes
+  // the save effect re-run and actually write to localStorage
   const [hasLoaded, setHasLoaded] = useState(false)
 
-  // On first render: load the saved watchlist from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem('watchlist')
@@ -24,9 +22,7 @@ export function WatchlistProvider({ children }) {
     setHasLoaded(true)
   }, [])
 
-  // Whenever the watchlist changes: save it to localStorage.
-  // We skip this until hasLoaded is true so we don't overwrite saved data
-  // with an empty array on the first render before hydration completes.
+  // skip on first render — otherwise we'd wipe localStorage before we've read it
   useEffect(() => {
     if (!hasLoaded) return
     try {
@@ -36,7 +32,6 @@ export function WatchlistProvider({ children }) {
     }
   }, [watchlist, hasLoaded])
 
-  // Add a symbol if it isn't already in the list
   function addToWatchlist(symbol) {
     setWatchlist((prev) => {
       if (prev.some((item) => item.symbol === symbol)) return prev
@@ -44,19 +39,16 @@ export function WatchlistProvider({ children }) {
     })
   }
 
-  // Remove a symbol from the list
   function removeFromWatchlist(symbol) {
     setWatchlist((prev) => prev.filter((item) => item.symbol !== symbol))
   }
 
-  // Update the personal note for a given symbol
   function updateNote(symbol, note) {
     setWatchlist((prev) =>
       prev.map((item) => (item.symbol === symbol ? { ...item, note } : item))
     )
   }
 
-  // Returns true if the symbol is already in the watchlist
   function isInWatchlist(symbol) {
     return watchlist.some((item) => item.symbol === symbol)
   }

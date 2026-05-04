@@ -18,7 +18,6 @@ export default function News() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Fetch all news articles once when the page first loads
   useEffect(() => {
     async function loadNews() {
       try {
@@ -51,13 +50,10 @@ export default function News() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">Market News</h1>
 
-        {/* Loading state */}
         {loading && <p className="text-gray-400">Loading news...</p>}
 
-        {/* Error state */}
         {error && <p className="text-red-400">{error}</p>}
 
-        {/* News cards */}
         {!loading && !error && (
           <>
             <div className="flex flex-col gap-4 mb-8">
@@ -66,7 +62,6 @@ export default function News() {
                   key={item.id ?? i}
                   className="bg-gray-800 hover:bg-gray-750 border border-gray-700 rounded-xl p-4 flex gap-4 transition-colors"
                 >
-                  {/* Thumbnail */}
                   {item.image && (
                     <img
                       src={item.image}
@@ -75,7 +70,6 @@ export default function News() {
                     />
                   )}
 
-                  {/* Text content */}
                   <div className="flex flex-col gap-1 min-w-0">
                     <div className="flex items-center gap-2 text-xs text-gray-400">
                       <span className="font-medium text-gray-300">{item.source}</span>
@@ -104,7 +98,6 @@ export default function News() {
               ))}
             </div>
 
-            {/* Pagination controls */}
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-4">
                 <button

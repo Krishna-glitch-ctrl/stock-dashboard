@@ -10,7 +10,6 @@ export default function Watchlist() {
   const [quotes, setQuotes] = useState({})
   const [loading, setLoading] = useState(false)
 
-  // Fetch a fresh quote for every symbol in the watchlist whenever the list changes
   useEffect(() => {
     if (watchlist.length === 0) {
       setQuotes({})
@@ -37,7 +36,6 @@ export default function Watchlist() {
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">My Watchlist</h1>
 
-        {/* Empty state */}
         {watchlist.length === 0 && (
           <div className="text-center text-gray-400 mt-20">
             <p className="text-lg mb-4">Your watchlist is empty.</p>
@@ -48,12 +46,10 @@ export default function Watchlist() {
           </div>
         )}
 
-        {/* Loading state */}
         {watchlist.length > 0 && loading && (
           <p className="text-gray-400">Loading quotes...</p>
         )}
 
-        {/* Stock cards */}
         {!loading && watchlist.map(({ symbol, note }) => {
           const q = quotes[symbol] || {}
           const isPositive = q.d >= 0
@@ -65,7 +61,6 @@ export default function Watchlist() {
               key={symbol}
               className="bg-gray-800 border border-gray-700 rounded-xl px-5 py-4 mb-4"
             >
-              {/* Top row: symbol + price + remove button */}
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div>
                   <Link
@@ -94,7 +89,6 @@ export default function Watchlist() {
                 </button>
               </div>
 
-              {/* Personal note textarea */}
               <textarea
                 value={note}
                 onChange={(e) => updateNote(symbol, e.target.value)}

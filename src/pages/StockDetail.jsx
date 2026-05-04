@@ -40,9 +40,8 @@ export default function StockDetail() {
     loadData()
   }, [symbol])
 
-  // Finnhub's free tier doesn't include historical candle data, so we generate a
-  // representative series client-side for visualization. In production, this would
-  // call a paid historical endpoint.
+  // Finnhub's free plan doesn't give historical prices, so I'm faking the chart
+  // with a random walk between yesterday's close and today's price
   const chartData = useMemo(() => {
     if (!quote?.c) return []
 
@@ -101,12 +100,10 @@ export default function StockDetail() {
     <div className="bg-gray-950 min-h-screen text-white p-6 md:p-8">
       <div className="max-w-5xl mx-auto">
 
-        {/* Back link */}
         <Link to="/" className="text-gray-400 hover:text-white text-sm mb-8 inline-block">
           ← Back to Home
         </Link>
 
-        {/* Company header */}
         <div className="flex items-center gap-4 mb-2">
           {profile?.logo && (
             <img
@@ -121,13 +118,11 @@ export default function StockDetail() {
           </div>
         </div>
 
-        {/* Price section */}
         <div className="flex flex-wrap items-end gap-4 mt-6 mb-8">
           <span className="text-5xl font-bold">${fmt(quote.c)}</span>
           <span className={`text-xl mb-1 ${changeColor}`}>
             {changeSign}{fmt(quote.d)} ({changeSign}{fmt(quote.dp)}%)
           </span>
-          {/* Watchlist toggle button */}
           {isInWatchlist(symbol) ? (
             <button
               onClick={() => removeFromWatchlist(symbol)}
@@ -145,7 +140,6 @@ export default function StockDetail() {
           )}
         </div>
 
-        {/* Stats grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {[
             { label: 'Open',       value: `$${fmt(quote.o)}`  },
@@ -160,7 +154,6 @@ export default function StockDetail() {
           ))}
         </div>
 
-        {/* Chart */}
         <h2 className="text-lg font-semibold mb-4 text-gray-300">
           30-Day Price Trend (simulated)
         </h2>
@@ -195,7 +188,6 @@ export default function StockDetail() {
           </ResponsiveContainer>
         </div>
 
-        {/* Company info */}
         {profile?.name && (
           <div className="bg-gray-800 rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
